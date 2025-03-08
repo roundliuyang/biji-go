@@ -38,6 +38,43 @@ logger会打印每条日志信息的日期、时间，默认输出到系统的�
 
 
 
+### Fatal系列
+
+`log` 包的 `Fatal` 系列方法用于输出日志并终止程序，它们的区别如下：
+
+| 方法                               | 作用                                                         | 终止程序 | 是否换行 |
+| ---------------------------------- | ------------------------------------------------------------ | -------- | -------- |
+| `log.Fatal(v ...)`                 | 等价于 `log.Print(v ...)`，输出日志并调用 `os.Exit(1)`       | ✅        | ❌        |
+| `log.Fatalf(format string, v ...)` | 等价于 `log.Printf(format, v ...)`，格式化输出日志并调用 `os.Exit(1)` | ✅        | ❌        |
+| `log.Fatalln(v ...)`               | 等价于 `log.Println(v ...)`，输出日志后自动换行并调用 `os.Exit(1)` | ✅        | ✅        |
+
+
+
+### **示例**
+
+```go
+package main
+
+import (
+	"log"
+)
+
+func main() {
+	log.Fatal("This is Fatal")      // 输出: This is Fatal
+	log.Fatalf("Error: %d", 404)    // 输出: Error: 404
+	log.Fatalln("Fatal with newline") // 输出: Fatal with newline (带换行)
+}
+```
+
+**注意：**
+
+- `log.Fatal`、`log.Fatalf` 和 `log.Fatalln` **都会调用 `os.Exit(1)`，导致程序终止**，所以它们 **不会执行 `defer` 语句**。
+- `Fatal` 与 `Fatalf` **不自动换行**，而 `Fatalln` **会自动换行**。
+
+如果只是想打印错误信息但不终止程序，可以使用 `Print`、`Printf` 或 `Println`。
+
+
+
 ## 配置logger
 
 默认情况下的logger只会提供日志的时间信息，但是很多情况下我们希望得到更多信息，比如记录该日志的文件名和行号等。log标准库中为我们提供了定制这些设置的方法。

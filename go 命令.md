@@ -212,3 +212,62 @@ go build hello.go
 go clean -modcache
 go mod tidy
 ```
+
+
+
+## 部署
+
+
+
+### 跨环境
+
+要在 Windows 上打包可执行文件，以便在 Linux 系统上运行，Go 提供了跨平台编译的功能。你可以通过设置 Go 环境变量来指定目标操作系统和架构，然后编译生成适用于 Linux 的可执行文件。
+
+
+
+#### 步骤如下：
+
+1. **设置环境变量**
+
+   你需要设置 `GOOS` 和 `GOARCH` 环境变量来指定目标操作系统和架构：
+
+   - `GOOS`：目标操作系统（例如 `linux`）
+   - `GOARCH`：目标架构（例如 `amd64`）
+
+   在 Windows 上编译 Linux 可执行文件，可以通过命令行或 PowerShell 设置这些变量。
+
+2. **使用命令编译**
+
+   在命令行中运行以下命令：
+
+   ```
+   set GOOS=linux
+   set GOARCH=amd64
+   go build -o myapp-linux main.go
+   ```
+
+   这将：
+
+   - 设置目标操作系统为 Linux（`GOOS=linux`）。
+   - 设置目标架构为 64 位（`GOARCH=amd64`）。
+   - 使用 `go build` 命令编译你的 Go 应用，并将输出文件命名为 `myapp-linux`。
+
+   如果你在 PowerShell 中，可以使用 `Set-Item` 来设置环境变量：
+
+   ```
+   $env:GOOS="linux"
+   $env:GOARCH="amd64"
+   go build -o myapp-linux main.go
+   ```
+
+3. **将文件复制到 Linux 系统**
+
+   编译完成后，你会得到一个名为 `myapp-linux` 的可执行文件。将该文件通过 SCP、FTP 或任何其他方式复制到你的 Linux 系统。
+
+4. **在 Linux 上运行**
+
+   在 Linux 上，你只需运行编译好的可执行文件：
+
+   ```
+   ./myapp-linux
+   ```
